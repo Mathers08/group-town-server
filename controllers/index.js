@@ -1,1 +1,2 @@
-export { default as UserController } from './UserController.js';
+export * as UserController  from './UserController.js';
+export * as NewsController from './NewsController.js';

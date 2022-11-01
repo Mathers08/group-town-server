@@ -1,8 +1,9 @@
 import express from 'express';
 import mongoose from 'mongoose';
-import { registerValidation } from './validations/auth.js';
-import checkAuth from './utils/checkAuth.js';
-import { getMe, login, register } from './controllers/UserController.js';
+import cors from 'cors';
+import { checkAuth, handleValidationErrors } from './utils/index.js';
+import { UserController, NewsController } from './controllers/index.js';
+import { loginValidation, registerValidation } from './validations.js';
 
 mongoose
   .connect('mongodb+srv://admin:mathers8888@cluster0.z9zmdwc.mongodb.net/group-town?retryWrites=true&w=majority')
@@ -12,6 +13,7 @@ mongoose
 const app = express();
 
 app.use(express.json());
+app.use(cors());
 
 app.listen(4000, (err) => {
   if (err) {
@@ -20,7 +22,13 @@ app.listen(4000, (err) => {
   return console.log('Server ok');
 });
 
-app.get('/auth/me', checkAuth, getMe);
-app.post('/auth/login', login);
-app.post('/auth/register', registerValidation, register);
+app.get('/auth/me', checkAuth, UserController.getMe);
+app.post('/auth/login', loginValidation, handleValidationErrors, UserController.login);
+app.post('/auth/register', registerValidation, handleValidationErrors, UserController.register);
+
+app.get('/news', NewsController.getAll);
+app.get('/news/:id', NewsController.getOne);
+app.post('/news', checkAuth, handleValidationErrors, NewsController.create);
+app.patch('/news/:id', checkAuth, handleValidationErrors, NewsController.update);
+app.delete('/news/:id', checkAuth, NewsController.remove);
 
