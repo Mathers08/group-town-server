@@ -17,7 +17,7 @@ export const register = async (req, res) => {
       lastName: req.body.lastName,
       firstName: req.body.firstName,
       gender: req.body.gender,
-      birthday: req.body.birthday,
+      birthday: req.body.birthday.slice(0, 10),
       email: req.body.email,
       passwordHash: hash,
     });
@@ -95,6 +95,17 @@ export const getMe = async (req, res) => {
     console.log(err);
     res.status(500).json({
       message: 'Нет доступа!'
+    });
+  }
+};
+export const getAll = async (req, res) => {
+  try {
+    const users = await UserModel.find();
+    res.json(users);
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({
+      message: 'Не удалось получить пользователей!'
     });
   }
 };

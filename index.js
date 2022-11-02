@@ -23,6 +23,7 @@ app.listen(4000, (err) => {
 });
 
 app.get('/auth/me', checkAuth, UserController.getMe);
+app.get('/auth/getAll', checkAuth, UserController.getAll);
 app.post('/auth/login', loginValidation, handleValidationErrors, UserController.login);
 app.post('/auth/register', registerValidation, handleValidationErrors, UserController.register);
 
