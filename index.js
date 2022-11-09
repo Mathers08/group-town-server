@@ -2,7 +2,7 @@ import express from 'express';
 import mongoose from 'mongoose';
 import cors from 'cors';
 import { checkAuth, handleValidationErrors } from './utils/index.js';
-import { UserController, NewsController } from './controllers/index.js';
+import { UserController, NewsController, TodoController } from './controllers/index.js';
 import { loginValidation, registerValidation } from './validations.js';
 
 mongoose
@@ -32,4 +32,9 @@ app.get('/news/:id', NewsController.getOne);
 app.post('/news', checkAuth, handleValidationErrors, NewsController.create);
 app.patch('/news/:id', checkAuth, handleValidationErrors, NewsController.update);
 app.delete('/news/:id', checkAuth, NewsController.remove);
+
+app.get('/todos', TodoController.getAll);
+app.post('/todos', checkAuth, handleValidationErrors, TodoController.create);
+app.patch('/todos/:id', checkAuth, handleValidationErrors, TodoController.update);
+app.delete('/todos/:id', checkAuth, TodoController.remove);
 

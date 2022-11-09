@@ -110,9 +110,7 @@ export const remove = async (req, res) => {
             message: 'Новость не найдена!'
           });
         }
-        res.json({
-          success: true
-        });
+        res.json({ success: true });
       }
     );
   } catch (err) {
