@@ -11,12 +11,12 @@ export const getAll = async (req, res) => {
     });
   }
 };
-/*export const getOne = async (req, res) => {
+export const getOne = async (req, res) => {
   try {
     const todo = await TodoModel.findById(req.params.id);
     if (!todo) {
-      return res.status(404).json({
-        message: 'Не удалось найти задачу!'
+      return res.status(500).json({
+        message: 'Не удалось вернуть задачу!'
       });
     }
     res.json(todo);
@@ -26,7 +26,7 @@ export const getAll = async (req, res) => {
       message: 'Не удалось вернуть задачу!'
     });
   }
-};*/
+};
 export const create = async (req, res) => {
   try {
     const doc = new TodoModel({

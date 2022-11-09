@@ -34,6 +34,7 @@ app.patch('/news/:id', checkAuth, handleValidationErrors, NewsController.update)
 app.delete('/news/:id', checkAuth, NewsController.remove);
 
 app.get('/todos', TodoController.getAll);
+app.get('/todos/:id', TodoController.getOne);
 app.post('/todos', checkAuth, handleValidationErrors, TodoController.create);
 app.patch('/todos/:id', checkAuth, handleValidationErrors, TodoController.update);
 app.delete('/todos/:id', checkAuth, TodoController.remove);
