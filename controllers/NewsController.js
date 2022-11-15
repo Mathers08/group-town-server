@@ -53,11 +53,14 @@ export const create = async (req, res) => {
       title: req.body.title,
       content: req.body.content,
       importance: req.body.importance,
+      createdAt: req.body.createdAt,
+      updatedTime: req.body.updatedTime,
       user: req.userId,
     });
 
     const news = await doc.save();
     res.json(news);
+
   } catch (err) {
     console.log(err);
     res.status(500).json({
@@ -77,6 +80,8 @@ export const update = async (req, res) => {
         title: req.body.title,
         content: req.body.content,
         importance: req.body.importance,
+        createdAt: req.body.createdAt,
+        updatedTime: req.body.updatedTime,
         user: req.userId,
       }
     );

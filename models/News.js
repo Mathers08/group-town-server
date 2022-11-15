@@ -5,6 +5,7 @@ const NewsSchema = new mongoose.Schema({
   content: { type: String, required: true, },
   importance: { type: String, required: true, },
   createdAt: String,
+  updatedTime: String,
   viewsCount: { type: Number, default: 0 },
   user: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
 }, {

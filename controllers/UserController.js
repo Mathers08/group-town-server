@@ -2,6 +2,10 @@ import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import UserModel from '../models/User.js';
 import { validationResult } from 'express-validator';
+import dayjs from 'dayjs';
+import 'dayjs/locale/ru.js';
+
+dayjs.locale('ru');
 
 export const register = async (req, res) => {
   try {
@@ -17,7 +21,7 @@ export const register = async (req, res) => {
       lastName: req.body.lastName,
       firstName: req.body.firstName,
       gender: req.body.gender,
-      birthday: req.body.birthday.slice(0, 10),
+      birthday: dayjs(req.body.birthday).format('D MMMM YYYY'),
       email: req.body.email,
       passwordHash: hash,
     });
