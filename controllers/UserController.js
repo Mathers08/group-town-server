@@ -4,6 +4,7 @@ import UserModel from '../models/User.js';
 import { validationResult } from 'express-validator';
 import dayjs from 'dayjs';
 import 'dayjs/locale/ru.js';
+import NewsModel from '../models/News.js';
 
 dayjs.locale('ru');
 
@@ -23,6 +24,7 @@ export const register = async (req, res) => {
       gender: req.body.gender,
       birthday: dayjs(req.body.birthday).format('D MMMM YYYY'),
       email: req.body.email,
+      avatarUrl: req.body.avatarUrl,
       passwordHash: hash,
     });
     const user = await doc.save();
@@ -110,6 +112,31 @@ export const getAll = async (req, res) => {
     console.log(err);
     res.status(500).json({
       message: 'Не удалось получить пользователей!'
+    });
+  }
+};
+export const update = async (req, res) => {
+  try {
+    await UserModel.updateOne(
+      {
+        _id: req.params.id
+      },
+      {
+        lastName: req.body.lastName,
+        firstName: req.body.firstName,
+        gender: req.body.gender,
+        birthday: req.body.birthday,
+        email: req.body.email,
+        avatarUrl: req.body.avatarUrl,
+      }
+    );
+    res.json({
+      success: true
+    });
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({
+      message: 'Не удалось обновить данные!'
     });
   }
 };

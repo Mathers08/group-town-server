@@ -1,8 +1,9 @@
 import express from 'express';
 import mongoose from 'mongoose';
 import cors from 'cors';
+import multer from 'multer';
 import { checkAuth, handleValidationErrors } from './utils/index.js';
-import { UserController, NewsController, TodoController } from './controllers/index.js';
+import { NewsController, TodoController, UserController } from './controllers/index.js';
 import { loginValidation, registerValidation } from './validations.js';
 
 mongoose
@@ -12,8 +13,20 @@ mongoose
 
 const app = express();
 
+const storage = multer.diskStorage({
+  destination: (_, __, cb) => {
+    cb(null, 'uploads');
+  },
+  filename: (_, file, cb) => {
+    cb(null, file.originalname);
+  }
+});
+
+const upload = multer({ storage });
+
 app.use(express.json());
 app.use(cors());
+app.use('/uploads', express.static('uploads'));
 
 app.listen(4000, (err) => {
   if (err) {
@@ -22,10 +35,17 @@ app.listen(4000, (err) => {
   return console.log('Server ok');
 });
 
+app.post('/upload', checkAuth, upload.single('image'), (req, res) => {
+  res.json({
+    url: `/uploads/${req.file.originalname}`
+  });
+});
+
 app.get('/auth/me', checkAuth, UserController.getMe);
 app.get('/auth/getAll', checkAuth, UserController.getAll);
 app.post('/auth/login', loginValidation, handleValidationErrors, UserController.login);
 app.post('/auth/register', registerValidation, handleValidationErrors, UserController.register);
+app.patch('/auth/login', registerValidation, handleValidationErrors, UserController.update);
 
 app.get('/news', NewsController.getAll);
 app.get('/news/:id', NewsController.getOne);
